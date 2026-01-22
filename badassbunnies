@@ -1,0 +1,238 @@
+<!-- force redeploy -->
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YSKA Games</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Inter:wght@400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --teal: rgb(24, 96, 92);
+            --light-bg: rgb(245, 247, 246);
+            --shadow: -5px 5px 5px rgba(0,0,0,0.25);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--teal);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* =====================
+           TOP BANNER
+        ====================== */
+
+        .top-banner {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 120px;
+            background-color: var(--teal);
+            padding: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .button-container {
+            display: grid;
+            grid-auto-flow: column;
+            gap: 10px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn {
+            height: 100px;
+            background-color: var(--teal);
+            color: var(--light-bg);
+            font-family: Montserrat, sans-serif;
+            font-weight: 700;
+            font-size: clamp(18px, 3vw, 36px);
+            border-radius: 10px;
+            border: 1px solid white;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .btn:hover,
+        .btn:focus-visible {
+            transform: translate(3px, -3px);
+            box-shadow: -8px 8px 8px rgba(0,0,0,0.3);
+        }
+
+        .btn-logo {
+            width: 100px;
+        }
+
+        .btn-logo img {
+            width: 75%;
+            height: 75%;
+            object-fit: contain;
+        }
+
+        .btn-text {
+            width: 300px;
+        }
+
+        @media (max-width: 739px) {
+            .btn-text {
+                width: calc((100vw - 120px - (10px * var(--btn-count, 2))) / var(--btn-count, 2));
+            }
+        }
+
+        /* =====================
+           INTRO
+        ====================== */
+
+        .intro {
+            padding-top: 50px;
+        }
+
+        .intro-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 50px;
+            display: flex;
+            gap: 50px;
+            align-items: center;        /* CHANGED */
+            justify-content: center;    /* CHANGED */
+        }
+
+        .intro-text {
+            max-width: 500px;
+            font-size: clamp(14px, 2.2vw, 28px);
+            line-height: 1.6;
+        }
+
+        .intro-image {
+            width: 100%;
+            max-width: 300px;
+            min-width: 150px;
+            aspect-ratio: 1 / 1;
+        }
+
+        .intro-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @media (max-width: 899px) {
+            .intro-inner {
+                flex-direction: column;
+                gap: 50px;
+            }
+
+            .intro-image {
+                margin: 0 auto;
+            }
+        }
+
+        /* =====================
+           DIVIDER
+        ====================== */
+
+        .divider {
+            margin: 50px auto;
+            height: 3px;
+            background-color: var(--teal);
+            width: calc(100% - 100px);
+            max-width: 1150px;
+        }
+
+        /* =====================
+           SECTIONS
+        ====================== */
+
+        .section-title {
+            font-family: Montserrat, sans-serif;
+            font-weight: 700;
+            font-size: clamp(18px, 3vw, 36px);
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        /* =====================
+           GAMES
+        ====================== */
+
+        .game {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.15s ease, box-shadow 0.15s ease; /* ADDED */
+        }
+
+        .game:hover {
+            transform: translate(3px, -3px);
+            box-shadow: -8px 8px 8px rgba(0,0,0,0.3);
+        }
+
+        .game img {
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .game-title {
+            font-size: clamp(14px, 2vw, 28px);
+        }
+
+        /* =====================
+           CONTACT
+        ====================== */
+
+        .contact {
+            max-width: 1200px;
+            margin: 0 auto 50px;
+            padding: 0 50px;
+            text-align: center;
+            font-size: clamp(14px, 2vw, 28px);
+            line-height: 1.8;
+        }
+
+        /* =====================
+           BOTTOM BANNER
+        ====================== */
+
+        .bottom-banner {
+            margin-top: 50px;
+            height: 50px;
+            background-color: var(--teal);
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="top-banner">
+    <nav class="button-container" style="--btn-count: 2;">
+        <a href="/" class="btn btn-logo" aria-label="Home">
+            <img src="logo-white.png" alt="YSKA Games logo">
+        </a>
+        <a href="#spellen" class="btn btn-text">SPELLEN</a>   <!-- CHANGED -->
+        <a href="#contact" class="btn btn-text">CONTACT</a>   <!-- CHANGED -->
+    </nav>
+</header>
+
+<footer class="bottom-banner"></footer>
+
+</body>
+</html>
