@@ -61,7 +61,7 @@
             color: var(--light-bg);
             font-family: Montserrat, sans-serif;
             font-weight: 700;
-            font-size: 36px;
+            font-size: clamp(18px, 3vw, 36px);
             border-radius: 10px;
             border: 1px solid white;
             box-shadow: var(--shadow);
@@ -69,6 +69,13 @@
             align-items: center;
             justify-content: center;
             transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        /* 🔹 Hover & focus animation (restored) */
+        .btn:hover,
+        .btn:focus-visible {
+            transform: translate(3px, -3px);
+            box-shadow: -8px 8px 8px rgba(0,0,0,0.3);
         }
 
         .btn-logo {
@@ -86,9 +93,6 @@
         }
 
         @media (max-width: 739px) {
-            .btn {
-                font-size: 18px;
-            }
             .btn-text {
                 width: calc((100vw - 120px - (10px * var(--btn-count, 2))) / var(--btn-count, 2));
             }
@@ -113,7 +117,7 @@
 
         .intro-text {
             max-width: 500px;
-            font-size: 28px;
+            font-size: clamp(14px, 2.2vw, 28px);
             line-height: 1.6;
         }
 
@@ -136,11 +140,6 @@
                 gap: 50px;
             }
 
-            .intro-text {
-                font-size: 14px;
-                max-width: 100%;
-            }
-
             .intro-image {
                 margin: 0 auto;
             }
@@ -159,16 +158,20 @@
         }
 
         /* =====================
-           GAMES
+           SECTIONS
         ====================== */
 
         .section-title {
             font-family: Montserrat, sans-serif;
             font-weight: 700;
-            font-size: 36px;
+            font-size: clamp(18px, 3vw, 36px);
             text-align: center;
             margin-bottom: 50px;
         }
+
+        /* =====================
+           GAMES
+        ====================== */
 
         .game {
             display: flex;
@@ -183,16 +186,20 @@
         }
 
         .game-title {
-            font-size: 28px;
+            font-size: clamp(14px, 2vw, 28px);
         }
 
-        @media (max-width: 899px) {
-            .section-title {
-                font-size: 18px;
-            }
-            .game-title {
-                font-size: 14px;
-            }
+        /* =====================
+           CONTACT
+        ====================== */
+
+        .contact {
+            max-width: 1200px;
+            margin: 0 auto 50px;
+            padding: 0 50px;
+            text-align: center;
+            font-size: clamp(14px, 2vw, 20px);
+            line-height: 1.8;
         }
 
         /* =====================
@@ -239,8 +246,17 @@
     <div class="game-title">Badass Bunnies</div>
 </a>
 
+<div class="divider"></div>
+
+<div class="section-title">CONTACT</div>
+
+<div class="contact">
+    Sjoerd Yska<br>
+    info@yskagames.com<br>
+    +31 6 57 04 55 75
+</div>
+
 <footer class="bottom-banner"></footer>
 
 </body>
 </html>
-
