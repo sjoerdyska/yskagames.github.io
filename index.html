@@ -1,6 +1,4 @@
 <!-- force redeploy -->
-
-
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -9,13 +7,12 @@
     <title>YSKA Games</title>
 
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&family=Inter:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Inter:wght@400&display=swap" rel="stylesheet">
 
     <style>
         :root {
             --teal: rgb(24, 96, 92);
             --light-bg: rgb(245, 247, 246);
-            --banner-bg: rgb(135, 172, 169);
             --shadow: -5px 5px 5px rgba(0,0,0,0.25);
         }
 
@@ -35,13 +32,8 @@
             text-decoration: none;
         }
 
-        a:focus-visible {
-            outline: 2px solid var(--teal);
-            outline-offset: 4px;
-        }
-
         /* =====================
-           STICKY TOP BANNER
+           TOP BANNER
         ====================== */
 
         .top-banner {
@@ -49,7 +41,7 @@
             top: 0;
             z-index: 1000;
             height: 120px;
-            background-color: var(--banner-bg);
+            background-color: var(--teal);
             padding: 10px;
             display: flex;
             align-items: center;
@@ -68,8 +60,10 @@
             background-color: var(--teal);
             color: var(--light-bg);
             font-family: Montserrat, sans-serif;
+            font-weight: 700;
             font-size: 36px;
-            border-radius: 3px;
+            border-radius: 10px;
+            border: 1px solid white;
             box-shadow: var(--shadow);
             display: flex;
             align-items: center;
@@ -77,23 +71,13 @@
             transition: transform 0.15s ease, box-shadow 0.15s ease;
         }
 
-        .btn:hover {
-            transform: translate(2px, -2px);
-            box-shadow: -7px 7px 7px rgba(0,0,0,0.3);
-        }
-
-        .btn:active {
-            transform: translate(0, 0);
-            box-shadow: var(--shadow);
-        }
-
         .btn-logo {
             width: 100px;
         }
 
         .btn-logo img {
-            width: 60%;
-            height: 60%;
+            width: 75%;
+            height: 75%;
             object-fit: contain;
         }
 
@@ -101,15 +85,17 @@
             width: 300px;
         }
 
-        /* Responsive button widths (auto-scales with button count) */
         @media (max-width: 739px) {
+            .btn {
+                font-size: 18px;
+            }
             .btn-text {
-                width: calc((100vw - 120px - (10px * (var(--btn-count, 2)))) / var(--btn-count, 2));
+                width: calc((100vw - 120px - (10px * var(--btn-count, 2))) / var(--btn-count, 2));
             }
         }
 
         /* =====================
-           INTRO SECTION
+           INTRO
         ====================== */
 
         .intro {
@@ -127,13 +113,14 @@
 
         .intro-text {
             max-width: 500px;
-            font-size: 30px;
+            font-size: 28px;
             line-height: 1.6;
         }
 
         .intro-image {
-            max-width: 500px;
             width: 100%;
+            max-width: 500px;
+            min-width: 300px;
             aspect-ratio: 1 / 1;
         }
 
@@ -141,14 +128,8 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.2s ease;
         }
 
-        .intro-image img:hover {
-            transform: scale(1.02);
-        }
-
-        /* Mobile layout */
         @media (max-width: 899px) {
             .intro-inner {
                 flex-direction: column;
@@ -156,11 +137,11 @@
             }
 
             .intro-text {
+                font-size: 14px;
                 max-width: 100%;
             }
 
             .intro-image {
-                width: calc(100% - 200px);
                 margin: 0 auto;
             }
         }
@@ -178,11 +159,12 @@
         }
 
         /* =====================
-           GAMES SECTION
+           GAMES
         ====================== */
 
         .section-title {
             font-family: Montserrat, sans-serif;
+            font-weight: 700;
             font-size: 36px;
             text-align: center;
             margin-bottom: 50px;
@@ -198,15 +180,19 @@
         .game img {
             height: 500px;
             object-fit: cover;
-            transition: transform 0.2s ease;
-        }
-
-        .game:hover img {
-            transform: scale(1.02);
         }
 
         .game-title {
-            font-size: 30px;
+            font-size: 28px;
+        }
+
+        @media (max-width: 899px) {
+            .section-title {
+                font-size: 18px;
+            }
+            .game-title {
+                font-size: 14px;
+            }
         }
 
         /* =====================
@@ -218,65 +204,43 @@
             height: 50px;
             background-color: var(--teal);
         }
-
-        /* =====================
-           REDUCED MOTION
-        ====================== */
-
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                transition: none !important;
-            }
-        }
     </style>
 </head>
+
 <body>
 
-    <!-- TOP BANNER -->
-    <header class="top-banner">
-        <nav class="button-container" style="--btn-count: 2;">
-            <a href="https://yskagames.com" class="btn btn-logo" aria-label="Home">
-                <img src="logo-white.png" alt="YSKA Games logo">
-            </a>
+<header class="top-banner">
+    <nav class="button-container" style="--btn-count: 2;">
+        <a href="/" class="btn btn-logo" aria-label="Home">
+            <img src="logo-white.png" alt="YSKA Games logo">
+        </a>
+        <a href="/spellen" class="btn btn-text">SPELLEN</a>
+        <a href="/contact" class="btn btn-text">CONTACT</a>
+    </nav>
+</header>
 
-            <a href="https://yskagames.com/spellen" class="btn btn-text">
-                SPELLEN
-            </a>
-
-            <a href="https://yskagames.com/contact" class="btn btn-text">
-                CONTACT
-            </a>
-        </nav>
-    </header>
-
-    <!-- INTRO -->
-    <section class="intro">
-        <div class="intro-inner">
-            <div class="intro-image">
-                <img src="photosjoerd.png" alt="Sjoerd Yska">
-            </div>
-
-            <div class="intro-text">
-                Ik ontwerp toegankelijke spellen, met veel aandacht voor elk detail. De instap is eenvoudig, het spelverloop voelt intuïtief en tijdens het spelen ontstaat er vanzelf ruimte voor strategie. Mijn spellen zijn gemaakt om door een breed publiek te spelen en blijven interessant, ook na vele potjes.
-            </div>
+<section class="intro">
+    <div class="intro-inner">
+        <div class="intro-image">
+            <img src="photosjoerd.png" alt="Sjoerd Yska">
         </div>
-    </section>
+        <div class="intro-text">
+            Ik ontwerp toegankelijke spellen, met veel aandacht voor elk detail. De instap is eenvoudig, het spelverloop voelt intuïtief en tijdens het spelen ontstaat er vanzelf ruimte voor strategie. Mijn spellen zijn gemaakt om door een breed publiek te spelen en blijven interessant, ook na vele potjes.
+        </div>
+    </div>
+</section>
 
-    <!-- DIVIDER -->
-    <div class="divider"></div>
+<div class="divider"></div>
 
-    <!-- GAMES -->
-    <div class="section-title">SPELLEN</div>
+<div class="section-title">SPELLEN</div>
 
-    <a class="game" href="https://yskagames.com/spellen/badassbunnies">
-        <img src="badassbunniescover.png" alt="Badass Bunnies cover">
-        <div class="game-title">Badass Bunnies</div>
-    </a>
+<a class="game" href="/spellen/badassbunnies">
+    <img src="badassbunniescover.png" alt="Badass Bunnies cover">
+    <div class="game-title">Badass Bunnies</div>
+</a>
 
-    <!-- BOTTOM -->
-    <footer class="bottom-banner"></footer>
+<footer class="bottom-banner"></footer>
 
 </body>
 </html>
-
 
