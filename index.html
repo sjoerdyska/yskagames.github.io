@@ -5,14 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YSKA Games</title>
 
-    <!-- Google Fonts -->
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&family=Inter:wght@400&display=swap" rel="stylesheet">
 
     <style>
         :root {
             --teal: rgb(24, 96, 92);
             --light-bg: rgb(245, 247, 246);
-            --banner-bg: rgb(134.5, 171.5, 169);
+            --banner-bg: rgb(135, 172, 169);
+            --shadow: -5px 5px 5px rgba(0,0,0,0.25);
         }
 
         * {
@@ -22,54 +23,69 @@
         body {
             margin: 0;
             font-family: Inter, sans-serif;
-            color: var(--teal);
             background-color: var(--light-bg);
+            color: var(--teal);
         }
 
         a {
-            text-decoration: none;
             color: inherit;
+            text-decoration: none;
+        }
+
+        a:focus-visible {
+            outline: 2px solid var(--teal);
+            outline-offset: 4px;
         }
 
         /* =====================
-           TOP BANNER
+           STICKY TOP BANNER
         ====================== */
 
         .top-banner {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
             height: 120px;
-            width: 100%;
             background-color: var(--banner-bg);
+            padding: 10px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            padding: 10px;
         }
 
         .button-container {
-            display: flex;
+            display: grid;
+            grid-auto-flow: column;
             gap: 10px;
             width: 100%;
-            max-width: 100%;
             justify-content: center;
         }
 
         .btn {
+            height: 100px;
             background-color: var(--teal);
             color: var(--light-bg);
-            height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             font-family: Montserrat, sans-serif;
             font-size: 12px;
             border-radius: 3px;
-            box-shadow: -5px 5px 5px rgba(0,0,0,0.25);
-            padding: 0;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .btn:hover {
+            transform: translate(2px, -2px);
+            box-shadow: -7px 7px 7px rgba(0,0,0,0.3);
+        }
+
+        .btn:active {
+            transform: translate(0, 0);
+            box-shadow: var(--shadow);
         }
 
         .btn-logo {
             width: 100px;
-            min-width: 100px;
         }
 
         .btn-logo img {
@@ -82,10 +98,10 @@
             width: 300px;
         }
 
-        /* Responsive button width */
+        /* Responsive button widths (auto-scales with button count) */
         @media (max-width: 739px) {
             .btn-text {
-                width: calc((100vw - 120px - (10px * 2)) / 2);
+                width: calc((100vw - 120px - (10px * (var(--btn-count, 2)))) / var(--btn-count, 2));
             }
         }
 
@@ -100,16 +116,16 @@
         .intro-inner {
             max-width: 1200px;
             margin: 0 auto;
+            padding: 0 50px;
             display: flex;
             gap: 50px;
             align-items: flex-start;
-            padding: 0 50px;
         }
 
         .intro-text {
             max-width: 500px;
             font-size: 10px;
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         .intro-image {
@@ -122,14 +138,18 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.2s ease;
         }
 
-        /* Mobile intro layout */
+        .intro-image img:hover {
+            transform: scale(1.02);
+        }
+
+        /* Mobile layout */
         @media (max-width: 899px) {
             .intro-inner {
                 flex-direction: column;
                 gap: 50px;
-                padding: 0 50px;
             }
 
             .intro-text {
@@ -175,6 +195,11 @@
         .game img {
             height: 500px;
             object-fit: cover;
+            transition: transform 0.2s ease;
+        }
+
+        .game:hover img {
+            transform: scale(1.02);
         }
 
         .game-title {
@@ -188,18 +213,26 @@
         .bottom-banner {
             margin-top: 50px;
             height: 50px;
-            width: 100%;
             background-color: var(--teal);
+        }
+
+        /* =====================
+           REDUCED MOTION
+        ====================== */
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                transition: none !important;
+            }
         }
     </style>
 </head>
 <body>
 
     <!-- TOP BANNER -->
-    <div class="top-banner">
-        <div class="button-container">
-
-            <a href="https://yskagames.com" class="btn btn-logo">
+    <header class="top-banner">
+        <nav class="button-container" style="--btn-count: 2;">
+            <a href="https://yskagames.com" class="btn btn-logo" aria-label="Home">
                 <img src="logo-white.png" alt="YSKA Games logo">
             </a>
 
@@ -210,14 +243,12 @@
             <a href="https://yskagames.com/contact" class="btn btn-text">
                 CONTACT
             </a>
-
-        </div>
-    </div>
+        </nav>
+    </header>
 
     <!-- INTRO -->
     <section class="intro">
         <div class="intro-inner">
-
             <div class="intro-image">
                 <img src="photosjoerd.png" alt="Sjoerd Yska">
             </div>
@@ -225,7 +256,6 @@
             <div class="intro-text">
                 Ik ontwerp toegankelijke spellen, met veel aandacht voor elk detail. De instap is eenvoudig, het spelverloop voelt intuïtief en tijdens het spelen ontstaat er vanzelf ruimte voor strategie. Mijn spellen zijn gemaakt om door een breed publiek te spelen en blijven interessant, ook na vele potjes.
             </div>
-
         </div>
     </section>
 
@@ -235,18 +265,15 @@
     <!-- GAMES -->
     <div class="section-title">SPELLEN</div>
 
-    <div class="game">
-        <a href="https://yskagames.com/spellen/badassbunnies">
-            <img src="badassbunniescover.png" alt="Badass Bunnies">
-        </a>
-        <a href="https://yskagames.com/spellen/badassbunnies" class="game-title">
-            Badass Bunnies
-        </a>
-    </div>
+    <a class="game" href="https://yskagames.com/spellen/badassbunnies">
+        <img src="badassbunniescover.png" alt="Badass Bunnies cover">
+        <div class="game-title">Badass Bunnies</div>
+    </a>
 
-    <!-- BOTTOM BANNER -->
-    <div class="bottom-banner"></div>
+    <!-- BOTTOM -->
+    <footer class="bottom-banner"></footer>
 
 </body>
 </html>
+
 
