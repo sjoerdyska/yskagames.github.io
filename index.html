@@ -71,7 +71,6 @@
             transition: transform 0.15s ease, box-shadow 0.15s ease;
         }
 
-        /* 🔹 Hover & focus animation (restored) */
         .btn:hover,
         .btn:focus-visible {
             transform: translate(3px, -3px);
@@ -112,7 +111,8 @@
             padding: 0 50px;
             display: flex;
             gap: 50px;
-            align-items: flex-start;
+            align-items: center;        /* CHANGED */
+            justify-content: center;    /* CHANGED */
         }
 
         .intro-text {
@@ -178,6 +178,12 @@
             flex-direction: column;
             align-items: center;
             gap: 10px;
+            transition: transform 0.15s ease, box-shadow 0.15s ease; /* ADDED */
+        }
+
+        .game:hover {
+            transform: translate(3px, -3px);
+            box-shadow: -8px 8px 8px rgba(0,0,0,0.3);
         }
 
         .game img {
@@ -198,7 +204,7 @@
             margin: 0 auto 50px;
             padding: 0 50px;
             text-align: center;
-            font-size: clamp(14px, 2vw, 20px);
+            font-size: clamp(14px, 2vw, 28px);
             line-height: 1.8;
         }
 
@@ -221,8 +227,8 @@
         <a href="/" class="btn btn-logo" aria-label="Home">
             <img src="logo-white.png" alt="YSKA Games logo">
         </a>
-        <a href="/spellen" class="btn btn-text">SPELLEN</a>
-        <a href="/contact" class="btn btn-text">CONTACT</a>
+        <a href="#spellen" class="btn btn-text">SPELLEN</a>   <!-- CHANGED -->
+        <a href="#contact" class="btn btn-text">CONTACT</a>   <!-- CHANGED -->
     </nav>
 </header>
 
@@ -239,7 +245,7 @@
 
 <div class="divider"></div>
 
-<div class="section-title">SPELLEN</div>
+<div class="section-title" id="spellen">SPELLEN</div> <!-- ID ADDED -->
 
 <a class="game" href="/spellen/badassbunnies">
     <img src="badassbunniescover.png" alt="Badass Bunnies cover">
@@ -248,7 +254,7 @@
 
 <div class="divider"></div>
 
-<div class="section-title">CONTACT</div>
+<div class="section-title" id="contact">CONTACT</div> <!-- ID ADDED -->
 
 <div class="contact">
     Sjoerd Yska<br>
