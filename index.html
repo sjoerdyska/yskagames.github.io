@@ -1,261 +1,394 @@
-<!-- force redeploy -->
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YSKA Games</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yska Games</title>
 
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Inter:wght@400&display=swap" rel="stylesheet">
+<!-- Fonts: Fredoka (display/headings) + Quicksand (body text) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
 
-    <style>
-        :root {
-            --teal: rgb(24, 96, 92);
-            --light-bg: rgb(245, 247, 246);
-            --shadow: -5px 5px 5px rgba(0,0,0,0.25);
-        }
+<style>
 
-        * {
-            box-sizing: border-box;
-        }
+/* =========================================================
+   1. SETTINGS — edit colors, fonts, sizes here in one place
+   ========================================================= */
+:root{
+  --color-cream: rgb(255, 250, 245);
+  --color-teal:  rgb(24, 98, 96);
 
-        body {
-            margin: 0;
-            font-family: Inter, sans-serif;
-            background-color: var(--light-bg);
-            color: var(--teal);
-        }
+  --font-display: "Fredoka", sans-serif;  /* headings (bold) */
+  --font-bold:    "Quicksand", sans-serif; /* bold body text */
+  --font-body:    "Quicksand", sans-serif; /* regular body text */
 
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
+  --max-width: 480px;     /* width of the content column on desktop */
+  --nav-height: 54px;     /* height of the fixed top bar */
+  --side-padding: 28px;   /* left/right padding inside sections */
+}
 
-        /* =====================
-           TOP BANNER
-        ====================== */
+/* =========================================================
+   2. RESET / BASE
+   ========================================================= */
+*{ box-sizing: border-box; margin: 0; padding: 0; }
 
-        .top-banner {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            height: 120px;
-            background-color: var(--teal);
-            padding: 10px;
-            display: flex;
-            align-items: center;
-        }
+html{
+  scroll-behavior: smooth;
+}
 
-        .button-container {
-            display: grid;
-            grid-auto-flow: column;
-            gap: 10px;
-            width: 100%;
-            justify-content: center;
-        }
+body{
+  font-family: var(--font-body);
+  font-weight: 500;
+  background: var(--color-cream);
+  color: var(--color-teal);
+  padding-top: var(--nav-height); /* keeps content below the fixed nav */
+  -webkit-font-smoothing: antialiased;
+}
 
-        .btn {
-            height: 100px;
-            background-color: var(--teal);
-            color: var(--light-bg);
-            font-family: Montserrat, sans-serif;
-            font-weight: 700;
-            font-size: clamp(18px, 3vw, 36px);
-            border-radius: 10px;
-            border: 1px solid white;
-            box-shadow: var(--shadow);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
-        }
+img{ max-width: 100%; display: block; }
 
-        .btn:hover,
-        .btn:focus-visible {
-            transform: translate(3px, -3px);
-            box-shadow: -8px 8px 8px rgba(0,0,0,0.3);
-        }
+a{ color: inherit; }
 
-        .btn-logo {
-            width: 100px;
-        }
+/* lands scrolled-to sections just below the fixed nav */
+#top, #poten, #andere-spellen, #contact{
+  scroll-margin-top: var(--nav-height);
+}
 
-        .btn-logo img {
-            width: 75%;
-            height: 75%;
-            object-fit: contain;
-        }
+/* =========================================================
+   3. TOP NAVIGATION BAR
+   ========================================================= */
+.navbar{
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: var(--nav-height);
+  background: var(--color-cream);
+  border-bottom: 1px solid rgba(24, 98, 96, 0.25);
+  display: flex;
+  z-index: 1000;
+}
 
-        .btn-text {
-            width: 300px;
-        }
+.navbar-inner{
+  display: flex;
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
 
-        @media (max-width: 739px) {
-            .btn-text {
-                width: calc((100vw - 120px - (10px * var(--btn-count, 2))) / var(--btn-count, 2));
-            }
-        }
+.navbar a{
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 6px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.2px;
+  color: var(--color-teal);
+  text-decoration: none;
+  border-right: 1px solid rgba(24, 98, 96, 0.25);
+}
 
-        /* =====================
-           INTRO
-        ====================== */
+.navbar a:last-child{ border-right: none; }
 
-        .intro {
-            padding-top: 50px;
-        }
+/* =========================================================
+   4. SHARED SECTION STYLES
+   ========================================================= */
+.section-inner{
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 48px var(--side-padding);
+}
 
-        .intro-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 50px;
-            display: flex;
-            gap: 50px;
-            align-items: center;        /* CHANGED */
-            justify-content: center;    /* CHANGED */
-        }
+.bg-teal{  background: var(--color-teal);  color: var(--color-cream); }
+.bg-cream{ background: var(--color-cream); color: var(--color-teal); }
 
-        .intro-text {
-            max-width: 500px;
-            font-size: clamp(14px, 2.2vw, 28px);
-            line-height: 1.6;
-        }
+.title-brand{
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  text-align: center;
+  font-size: 1.9rem;
+  margin-bottom: 32px;
+}
 
-        .intro-image {
-            width: 100%;
-            max-width: 300px;
-            min-width: 150px;
-            aspect-ratio: 1 / 1;
-        }
+.title-section{
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 24px;
+}
 
-        .intro-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+p{
+  font-family: var(--font-body);
+  font-weight: 500;
+  line-height: 1.65;
+  font-size: 1rem;
+  margin-bottom: 22px;
+}
 
-        @media (max-width: 899px) {
-            .intro-inner {
-                flex-direction: column;
-                gap: 50px;
-            }
+p.lead{
+  font-family: var(--font-bold);
+  font-weight: 700;
+}
 
-            .intro-image {
-                margin: 0 auto;
-            }
-        }
+p:last-child{ margin-bottom: 0; }
 
-        /* =====================
-           DIVIDER
-        ====================== */
+/* =========================================================
+   5. HERO / "YSKA GAMES" SECTION
+   ========================================================= */
+.photo-frame{
+  width: 78%;
+  max-width: 300px;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  margin: 0 auto 32px auto;
+}
 
-        .divider {
-            margin: 50px auto;
-            height: 3px;
-            background-color: var(--teal);
-            width: calc(100% - 100px);
-            max-width: 1150px;
-        }
+.photo-frame img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-        /* =====================
-           SECTIONS
-        ====================== */
+/* hidden extra paragraphs, revealed by the chevron toggle */
+.more-text{
+  display: grid;
+  grid-template-rows: 0fr;
+  overflow: hidden;
+  transition: grid-template-rows 0.35s ease;
+}
 
-        .section-title {
-            font-family: Montserrat, sans-serif;
-            font-weight: 700;
-            font-size: clamp(18px, 3vw, 36px);
-            text-align: center;
-            margin-bottom: 50px;
-        }
+.more-text > div{ overflow: hidden; }
 
-        /* =====================
-           GAMES
-        ====================== */
+.more-text.is-open{
+  grid-template-rows: 1fr;
+}
 
-        .game {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            transition: transform 0.15s ease, box-shadow 0.15s ease; /* ADDED */
-        }
+.more-text.is-open > div{
+  padding-top: 22px; /* spacing once revealed, matches paragraph rhythm */
+}
 
-.game:hover img { transform: scale(1.02); } .game img { height: 300px; object-fit: cover; }
+.chevron-btn{
+  display: flex;
+  justify-content: center;
+  padding-top: 4px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  width: 100%;
+  color: var(--color-cream); /* buttons don't auto-inherit text color, set it explicitly */
+}
 
+.chevron-btn svg{
+  transition: transform 0.3s ease;
+}
 
-        .game-title {
-            font-size: clamp(14px, 2vw, 28px);
-        }
+.chevron-btn.is-open svg{
+  transform: rotate(180deg);
+}
 
-        /* =====================
-           CONTACT
-        ====================== */
+.chevron-btn.is-open{
+  display: none; /* arrow disappears once the text is fully expanded */
+}
 
-        .contact {
-            max-width: 1200px;
-            margin: 0 auto 50px;
-            padding: 0 50px;
-            text-align: center;
-            font-size: clamp(14px, 2vw, 28px);
-            line-height: 1.8;
-        }
+/* =========================================================
+   6. POTEN SECTION
+   ========================================================= */
+.poten-link{
+  display: inline-block;
+  font-family: var(--font-body);
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--color-teal);
+}
 
-        /* =====================
-           BOTTOM BANNER
-        ====================== */
+/* =========================================================
+   7. ANDERE SPELLEN SECTION
+   ========================================================= */
+.cover-link{
+  display: flex;
+  justify-content: center;
+}
 
-        .bottom-banner {
-            margin-top: 50px;
-            height: 50px;
-            background-color: var(--teal);
-        }
-    </style>
+.cover-link img{
+  width: 62%;
+  max-width: 230px;
+}
+
+/* =========================================================
+   8. CONTACT SECTION
+   ========================================================= */
+.contact-lines p{
+  text-align: center;
+}
+
+.contact-lines a{
+  text-decoration: none;
+}
+
+/* =========================================================
+   9. FOOTER
+   ========================================================= */
+footer{
+  background-color: var(--color-teal);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 12px 12px;
+  padding: 40px var(--side-padding);
+  display: flex;
+  justify-content: center;
+}
+
+.footer-logo-link{
+  display: inline-block;
+}
+
+.footer-logo-link img{
+  width: 150px;
+}
+
+/* =========================================================
+   10. DESKTOP / LARGER SCREENS
+   (mobile design stays the same, just a touch more breathing room)
+   ========================================================= */
+@media (min-width: 700px){
+  :root{
+    --max-width: 560px;
+  }
+
+  .title-brand{ font-size: 2.2rem; }
+  .title-section{ font-size: 1.7rem; }
+  p{ font-size: 1.05rem; }
+}
+
+</style>
 </head>
-
 <body>
 
-<header class="top-banner">
-    <nav class="button-container" style="--btn-count: 2;">
-        <a href="/" class="btn btn-logo" aria-label="Home">
-            <img src="logo-white.png" alt="YSKA Games logo">
-        </a>
-        <a href="#spellen" class="btn btn-text">SPELLEN</a>   <!-- CHANGED -->
-        <a href="#contact" class="btn btn-text">CONTACT</a>   <!-- CHANGED -->
-    </nav>
+<!-- =========================================================
+     NAVIGATION — links scroll smoothly to the matching section
+     ========================================================= -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="#top">Yska Games</a>
+    <a href="#poten">Poten</a>
+    <a href="#andere-spellen">Andere Spellen</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- =========================================================
+     HERO SECTION
+     ========================================================= -->
+<header id="top" class="bg-teal">
+  <div class="section-inner">
+
+    <h1 class="title-brand">Yska Games</h1>
+
+    <div class="photo-frame">
+      <!-- Replace with your own file, keep the same path/name or update the src below -->
+      <img src="images/foto-sjoerd-vierkant.jpg" alt="Sjoerd Yska">
+    </div>
+
+    <p class="lead">Hallo, ik ben Sjoerd Yska. Ik ontwerp en geef bord- en kaartspellen uit. Ik maak toegankelijke spellen die snel te leren zijn, maar waar genoeg in zit om ze vaker te blijven spelen. Binnenkort verschijnt Poten, het eerste spel dat ik zelf uitgeef.</p>
+
+    <!-- extra paragraphs, hidden until the chevron is clicked -->
+    <div class="more-text" id="moreText">
+      <div>
+        <p>Ik ben altijd al bezig geweest met spellen en creatief werk. Na mijn studie ben ik ook echt begonnen met het spellen ontwerpen.</p>
+
+        <p>In 2025 kwam mijn eerste spel, Badass Bunnies, uit bij uitgever 999 Games. Inmiddels werk ik aan meerdere nieuwe spellen en bouw ik verder aan Yska Games.</p>
+
+        <p>Bij mijn eigen spellen komt alles samen: het bedenken van het spel, het artwork en de rest eromheen. Ik probeer mijn spellen zo te maken dat ze voor zoveel mogelijk mensen werken: vanaf 8 jaar, makkelijk uit te leggen, duidelijke iconen, niet te veel tekst en gewoon prettig om te spelen. En met genoeg keuzes erin om interessant en spannend te blijven.</p>
+      </div>
+    </div>
+
+    <button class="chevron-btn" id="chevronBtn" aria-expanded="false" aria-controls="moreText" aria-label="Lees meer">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </button>
+
+  </div>
 </header>
 
-<section class="intro">
-    <div class="intro-inner">
-        <div class="intro-image">
-            <img src="photosjoerd.png" alt="Sjoerd Yska">
-        </div>
-        <div class="intro-text">
-            Ik ontwerp toegankelijke spellen, met veel aandacht voor elk detail. De instap is eenvoudig, het spelverloop voelt intuïtief en tijdens het spelen ontstaat er vanzelf ruimte voor strategie. Mijn spellen zijn gemaakt om door een breed publiek te spelen en blijven interessant, ook na vele potjes.
-        </div>
-    </div>
+<!-- =========================================================
+     POTEN SECTION
+     ========================================================= -->
+<section id="poten" class="bg-cream">
+  <div class="section-inner">
+
+    <h2 class="title-section">Poten</h2>
+
+    <p>Verzameln sets van 4 pootafdrukken. Maar pas op: onvolledige sets leveren minpunten op!</p>
+
+    <p>Ik ben nog druk bezig met dit spel. Wil je op de hoogte blijven? Volg mijn instagram!</p>
+
+    <p><a class="poten-link" href="https://www.instagram.com/yskagames/" target="_blank" rel="noopener">instagram.com/yskagames</a></p>
+
+  </div>
 </section>
 
-<div class="divider"></div>
+<!-- =========================================================
+     ANDERE SPELLEN SECTION
+     ========================================================= -->
+<section id="andere-spellen" class="bg-teal">
+  <div class="section-inner">
 
-<div class="section-title" id="spellen">SPELLEN</div> <!-- ID ADDED -->
+    <h2 class="title-section">Andere Spellen</h2>
 
-<a class="game" href="/spellen/badassbunnies">
-    <img src="badassbunniescover.png" alt="Badass Bunnies cover">
-    <div class="game-title">Badass Bunnies</div>
-</a>
+    <a class="cover-link" href="https://www.999games.nl/product/badass-bunnies/8721184283325" target="_blank" rel="noopener">
+      <!-- Replace with your own file, keep the same path/name or update the src below -->
+      <img src="images/badassbunniescover.png" alt="Badass Bunnies, uitgegeven door 999 Games" loading="lazy">
+    </a>
 
-<div class="divider"></div>
+  </div>
+</section>
 
-<div class="section-title" id="contact">CONTACT</div> <!-- ID ADDED -->
+<!-- =========================================================
+     CONTACT SECTION
+     ========================================================= -->
+<section id="contact" class="bg-cream">
+  <div class="section-inner contact-lines">
 
-<div class="contact">
-    Sjoerd Yska<br>
-    info@yskagames.com<br>
-    +31 6 57 04 55 75
-</div>
+    <h2 class="title-section">Contact</h2>
 
-<footer class="bottom-banner"></footer>
+    <p>Sjoerd Yska</p>
+    <p><a href="mailto:info@yskagames.com">info@yskagames.com</a></p>
+    <p><a href="tel:+31657045575">+31 6 57 04 55 75</a></p>
+    <p><a href="https://www.instagram.com/yskagames/" target="_blank" rel="noopener">instagram.com/yskagames</a></p>
+
+  </div>
+</section>
+
+<!-- =========================================================
+     FOOTER — logo scrolls back to the top when clicked
+     ========================================================= -->
+<footer>
+  <a href="#top" class="footer-logo-link" aria-label="Naar boven">
+    <!-- Replace with your own file, keep the same path/name or update the src below -->
+    <img src="images/logov2-teal.png" alt="Yska Games logo" loading="lazy">
+  </a>
+</footer>
+
+<script>
+  // Toggles the extra hero paragraphs open/closed
+  const chevronBtn = document.getElementById('chevronBtn');
+  const moreText = document.getElementById('moreText');
+
+  chevronBtn.addEventListener('click', () => {
+    const isOpen = moreText.classList.toggle('is-open');
+    chevronBtn.classList.toggle('is-open', isOpen);
+    chevronBtn.setAttribute('aria-expanded', isOpen);
+  });
+</script>
 
 </body>
 </html>
