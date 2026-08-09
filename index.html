@@ -210,6 +210,47 @@ p:last-child{ margin-bottom: 0; }
   color: var(--color-teal);
 }
 
+/* Poten 3D box viewer — kept in its own iframe so the viewer's
+   full-screen styling stays fully isolated from the rest of the page. */
+.poten-box{
+  margin: 6px 0 26px;
+}
+
+.poten-box-frame{
+  display: block;
+  width: 100%;
+  height: 440px;
+  border: 0;
+  background: transparent;
+  overflow: hidden;
+}
+
+/* Rules download links (NL / EN / FR) */
+.rules-downloads{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.rules-link{
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  color: var(--color-teal);
+  border: 1.5px solid rgba(24, 98, 96, 0.4);
+  border-radius: 999px;
+  padding: 7px 16px;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.rules-link:hover{
+  background: var(--color-teal);
+  border-color: var(--color-teal);
+  color: var(--color-cream);
+}
+
 /* =========================================================
    7. ANDERE SPELLEN SECTION
    ========================================================= */
@@ -266,6 +307,7 @@ footer{
   .title-brand{ font-size: 2.2rem; }
   .title-section{ font-size: 1.7rem; }
   p{ font-size: 1.05rem; }
+  .poten-box-frame{ height: 520px; }
 }
 
 </style>
@@ -274,13 +316,14 @@ footer{
 
 <!-- =========================================================
      NAVIGATION — links scroll smoothly to the matching section
+     and show a clean URL (e.g. /poten) instead of /#poten
      ========================================================= -->
 <nav class="navbar">
   <div class="navbar-inner">
-    <a href="#top">Yska Games</a>
-    <a href="#poten">Poten</a>
-    <a href="#andere-spellen">Andere Spellen</a>
-    <a href="#contact">Contact</a>
+    <a href="/" data-nav>Yska Games</a>
+    <a href="/poten" data-nav>Poten</a>
+    <a href="/andere-spellen" data-nav>Andere Spellen</a>
+    <a href="/contact" data-nav>Contact</a>
   </div>
 </nav>
 
@@ -327,11 +370,21 @@ footer{
 
     <h2 class="title-section">Poten</h2>
 
-    <p>Verzamel sets van 4 pootafdrukken. Maar pas op: onvolledige sets leveren minpunten op!</p>
+    <p>Mijn eerste spel Poten wordt dit jaar uitgegeven. Ben je geïnteresseerd? Bekijk het doosje hier!</p>
 
-    <p>Ik ben nog druk bezig met dit spel. Wil je op de hoogte blijven? Volg mij dan op instagram!</p>
+    <div class="poten-box">
+      <iframe class="poten-box-frame" title="Poten 3D doosje" src="boxpoten.html" loading="lazy" scrolling="no"></iframe>
+    </div>
 
-    <p><a class="poten-link" href="https://www.instagram.com/yskagames/" target="_blank" rel="noopener">instagram.com/yskagames</a></p>
+    <p>Poten is een klein spel met veel spanning en speelplezier! Geen ingewikkelde regels, dus jong en oud kan meteen meedoen.</p>
+
+    <p>De spelregels kun je hier downloaden:</p>
+
+    <div class="rules-downloads">
+      <a class="rules-link" href="Rules%20NL.pdf" download>Rules NL</a>
+      <a class="rules-link" href="Rules%20EN.pdf" download>Rules EN</a>
+      <a class="rules-link" href="Rules%20FR.pdf" download>Rules FR</a>
+    </div>
 
   </div>
 </section>
@@ -364,6 +417,7 @@ footer{
     <p><a href="mailto:info@yskagames.com">info@yskagames.com</a></p>
     <p><a href="tel:+31657045575">+31 6 57 04 55 75</a></p>
     <p><a href="https://www.instagram.com/yskagames/" target="_blank" rel="noopener">instagram.com/yskagames</a></p>
+    <p>KvK: 99631091</p>
 
   </div>
 </section>
@@ -372,7 +426,7 @@ footer{
      FOOTER — logo scrolls back to the top when clicked
      ========================================================= -->
 <footer>
-  <a href="#top" class="footer-logo-link" aria-label="Naar boven">
+  <a href="/" data-nav class="footer-logo-link" aria-label="Naar boven">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="1652 3382 153 153" width="150" height="150">
       <style>.cls-1{fill:#fffbf6;}</style>
       <path class="cls-1" d="M1698.88,3433.34v-14.17c0-2.35-1.9-4.25-4.25-4.25s-4.25,1.9-4.25,4.25v14.17c0,3.4-1.99,6.38-4.25,6.38,0,0,0,0,0,0s0,0,0,0c-2.26,0-4.25-2.98-4.25-6.38v-14.17c0-2.35-1.9-4.25-4.25-4.25s-4.25,1.9-4.25,4.25v14.17c0,6.46,3.56,11.96,8.5,14.01v49.77c0,2.35,1.9,4.25,4.25,4.25s4.25-1.9,4.25-4.25v-49.77c4.95-2.05,8.5-7.55,8.5-14.01Z"/>
@@ -399,6 +453,48 @@ footer{
     chevronBtn.classList.toggle('is-open', isOpen);
     chevronBtn.setAttribute('aria-expanded', isOpen);
   });
+
+
+  // -----------------------------------------------------------------
+  // Clean-URL navigation: show /poten instead of /#poten, with no page
+  // reload. NOTE: for someone opening yskagames.com/poten directly (or
+  // refreshing while on it) to work, your hosting has to serve this same
+  // file for /poten, /andere-spellen and /contact — a standard
+  // "rewrite everything to index.html" rule. In-page clicking works
+  // without any server changes.
+  // -----------------------------------------------------------------
+  const routes = {
+    '/': 'top',
+    '/poten': 'poten',
+    '/andere-spellen': 'andere-spellen',
+    '/contact': 'contact'
+  };
+
+  function scrollToPath(path, smooth){
+    const id = routes[path];
+    if (!id) return;
+    if (id === 'top'){
+      window.scrollTo({ top: 0, behavior: smooth ? 'smooth' : 'auto' });
+    } else {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto' });
+    }
+  }
+
+  document.querySelectorAll('a[data-nav]').forEach(link => {
+    link.addEventListener('click', e => {
+      const path = link.getAttribute('href');
+      if (!(path in routes)) return;   // any other link keeps its normal behaviour
+      e.preventDefault();
+      if (location.pathname !== path) history.pushState(null, '', path);
+      scrollToPath(path, true);
+    });
+  });
+
+  window.addEventListener('popstate', () => scrollToPath(location.pathname, false));
+
+  // On load, if we arrived on a section path, jump straight to that section.
+  scrollToPath(location.pathname, false);
 </script>
 
 </body>
