@@ -10,6 +10,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
 
+<!-- Kaart (Leaflet + OpenStreetMap) voor de verkooppunten bij Poten -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+
 <style>
 
 /* =========================================================
@@ -251,6 +254,54 @@ p:last-child{ margin-bottom: 0; }
   color: var(--color-cream);
 }
 
+/* Poten: info links, "Waar te koop" (online + kaart) rechts.
+   Op mobiel staat de kaart onder de Poten-info. */
+.poten-where{
+  margin-top: 40px;
+}
+
+.title-sub{
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.3rem;
+  margin-bottom: 14px;
+}
+
+.where-online{
+  margin-bottom: 22px;
+}
+
+.where-map{
+  height: 380px;
+  border: 1.5px solid rgba(24, 98, 96, 0.4);
+  border-radius: 16px;
+  position: relative;
+  z-index: 0; /* houdt de kaartlagen onder de vaste navigatiebalk */
+}
+
+.leaflet-container{
+  font-family: var(--font-body);
+  background: #e9eeea;
+}
+
+.leaflet-container a{
+  color: var(--color-teal);
+  font-weight: 600;
+}
+
+/* eigen kaartpunt in de huiskleuren */
+.where-pin{
+  background: var(--color-teal);
+  border: 3px solid var(--color-cream);
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.where-pin-name{
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
 /* =========================================================
    7. ANDERE SPELLEN SECTION
    ========================================================= */
@@ -308,6 +359,18 @@ footer{
   .title-section{ font-size: 1.7rem; }
   p{ font-size: 1.05rem; }
   .poten-box-frame{ height: 520px; }
+}
+
+@media (min-width: 960px){
+  #poten .section-inner{ max-width: 1040px; }
+  .poten-layout{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: start;
+  }
+  .poten-where{ margin-top: 0; }
+  .where-map{ height: 440px; }
 }
 
 </style>
@@ -370,6 +433,9 @@ footer{
 
     <h2 class="title-section">Poten</h2>
 
+    <div class="poten-layout">
+    <div class="poten-info">
+
     <p>Mijn eerste spel Poten wordt dit jaar uitgegeven. Ben je geïnteresseerd? Bekijk het doosje hier!</p>
 
     <div class="poten-box">
@@ -385,6 +451,18 @@ footer{
       <a class="rules-link" href="Rules%20EN.pdf" download>Rules EN</a>
       <a class="rules-link" href="Rules%20FR.pdf" download>Rules FR</a>
     </div>
+
+    </div><!-- /.poten-info -->
+
+    <!-- Waar te koop: wordt gevuld uit verkooppunten.csv (zie script onderaan) -->
+    <div class="poten-where" id="potenWhere" hidden>
+      <h3 class="title-sub">Verkooppunten</h3>
+      <p>Bestel Poten online of ga langs bij een winkel in de buurt.</p>
+      <div class="rules-downloads where-online" id="verkoopOnline"></div>
+      <div class="where-map" id="verkoopKaart" role="region" aria-label="Kaart met winkels waar Poten te koop is"></div>
+    </div>
+
+    </div><!-- /.poten-layout -->
 
   </div>
 </section>
@@ -495,6 +573,73 @@ footer{
 
   // On load, if we arrived on a section path, jump straight to that section.
   scrollToPath(location.pathname, false);
+</script>
+
+<!-- Verkooppunten Poten: leest verkooppunten.csv (kolommen: naam;adres;postcode;plaats;land;website;spellen;lat;lon) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script>
+  (function(){
+    const num = v => parseFloat(String(v || '').replace(',', '.'));
+    const isUrl = v => /^https?:\/\//i.test(v || '');
+
+    function popupFor(r){
+      const box = document.createElement('div');
+      const name = document.createElement('span');
+      name.className = 'where-pin-name';
+      name.textContent = r.naam;
+      const place = [r.postcode, r.plaats].filter(Boolean).join(' ');
+      box.append(name, document.createElement('br'), [r.adres, place].filter(Boolean).join(', '));
+      if (isUrl(r.website)){
+        const a = document.createElement('a');
+        a.href = r.website; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'Website';
+        box.append(document.createElement('br'), a);
+      }
+      return box;
+    }
+
+    Papa.parse('verkooppunten.csv', {
+      download: true, header: true, skipEmptyLines: true,
+      complete: ({ data }) => {
+        const rows   = data.filter(r => /poten/i.test(r.spellen || ''));
+        const isShop = r => r.adres || r.postcode || r.plaats;
+        const online = rows.filter(r => !isShop(r) && isUrl(r.website));
+        const shops  = rows.filter(isShop);
+        const pins   = shops.filter(r => !isNaN(num(r.lat)) && !isNaN(num(r.lon)));
+
+        shops.filter(r => !pins.includes(r))
+             .forEach(r => console.warn('Geen coördinaten voor', r.naam, '- draai geocode.py'));
+
+        const where = document.getElementById('potenWhere');
+        const onlineBox = document.getElementById('verkoopOnline');
+        const mapBox = document.getElementById('verkoopKaart');
+        if (!online.length && !pins.length) return;   // niets te tonen: blok blijft verborgen
+        where.hidden = false;
+
+        online.forEach(r => {
+          const a = document.createElement('a');
+          a.className = 'rules-link';
+          a.href = r.website; a.target = '_blank'; a.rel = 'noopener'; a.textContent = r.naam;
+          onlineBox.append(a);
+        });
+        if (!online.length) onlineBox.hidden = true;
+
+        if (!pins.length){ mapBox.hidden = true; return; }
+        const map = L.map(mapBox, { scrollWheelZoom: false, dragging: !L.Browser.mobile })
+                     .setView([52.1, 5.3], 7);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19, attribution: '© OpenStreetMap'
+        }).addTo(map);
+        const icon = L.divIcon({ className: 'where-pin', iconSize: [22, 22], iconAnchor: [11, 11], popupAnchor: [0, -12] });
+        const points = pins.map(r => {
+          const p = [num(r.lat), num(r.lon)];
+          L.marker(p, { icon, title: r.naam }).addTo(map).bindPopup(popupFor(r));
+          return p;
+        });
+        map.fitBounds(points, { padding: [30, 30], maxZoom: 12 });
+      }
+    });
+  })();
 </script>
 
 </body>
