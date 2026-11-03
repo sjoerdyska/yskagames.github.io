@@ -27,7 +27,7 @@
   --font-body:    "Quicksand", sans-serif; /* regular body text */
 
   --max-width: 480px;     /* width of the content column on desktop */
-  --nav-height: 54px;     /* height of the fixed top bar */
+  --wide-width: 1240px;   /* width of the three-column layout on desktop */
   --side-padding: 28px;   /* left/right padding inside sections */
 }
 
@@ -45,57 +45,12 @@ body{
   font-weight: 500;
   background: var(--color-cream);
   color: var(--color-teal);
-  padding-top: var(--nav-height); /* keeps content below the fixed nav */
   -webkit-font-smoothing: antialiased;
 }
 
 img{ max-width: 100%; display: block; }
 
 a{ color: inherit; }
-
-/* lands scrolled-to sections just below the fixed nav */
-#top, #poten, #andere-spellen, #contact{
-  scroll-margin-top: var(--nav-height);
-}
-
-/* =========================================================
-   3. TOP NAVIGATION BAR
-   ========================================================= */
-.navbar{
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%;
-  height: var(--nav-height);
-  background: var(--color-cream);
-  border-bottom: 1px solid rgba(24, 98, 96, 0.25);
-  display: flex;
-  z-index: 1000;
-}
-
-.navbar-inner{
-  display: flex;
-  width: 100%;
-  max-width: var(--max-width);
-  margin: 0 auto;
-}
-
-.navbar a{
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 0 6px;
-  font-family: var(--font-body);
-  font-weight: 600;
-  font-size: 0.75rem;
-  letter-spacing: 0.2px;
-  color: var(--color-teal);
-  text-decoration: none;
-  border-right: 1px solid rgba(24, 98, 96, 0.25);
-}
-
-.navbar a:last-child{ border-right: none; }
 
 /* =========================================================
    4. SHARED SECTION STYLES
@@ -108,16 +63,6 @@ a{ color: inherit; }
 
 .bg-teal{  background: var(--color-teal);  color: var(--color-cream); }
 .bg-cream{ background: var(--color-cream); color: var(--color-teal); }
-
-.title-brand{
-  font-family: var(--font-display);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  text-align: center;
-  font-size: 1.9rem;
-  margin-bottom: 32px;
-}
 
 .title-section{
   font-family: var(--font-display);
@@ -161,6 +106,26 @@ p:last-child{ margin-bottom: 0; }
   object-fit: cover;
 }
 
+/* logo boven de foto: smaller dan de foto */
+.hero-logo{
+  width: min(180px, 48%);
+  margin: 0 auto 28px;
+}
+
+.hero-logo svg{
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.sr-only{
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
 /* hidden extra paragraphs, revealed by the chevron toggle */
 .more-text{
   display: grid;
@@ -176,7 +141,12 @@ p:last-child{ margin-bottom: 0; }
 }
 
 .more-text.is-open > div{
-  padding-top: 22px; /* spacing once revealed, matches paragraph rhythm */
+  padding-top: 0;
+}
+
+/* rechterkolom begint op mobiel met een eigen blok: zelfde alinea-ritme */
+.hero-col-b .more-text.is-open > div{
+  padding-top: 22px;
 }
 
 .chevron-btn{
@@ -254,8 +224,8 @@ p:last-child{ margin-bottom: 0; }
   color: var(--color-cream);
 }
 
-/* Poten: info links, "Waar te koop" (online + kaart) rechts.
-   Op mobiel staat de kaart onder de Poten-info. */
+/* Poten: online verkooppunten + kaart staan rechts.
+   Op mobiel staat alles onder elkaar, onder de Poten-info. */
 .poten-where{
   margin-top: 40px;
 }
@@ -267,8 +237,8 @@ p:last-child{ margin-bottom: 0; }
   margin-bottom: 14px;
 }
 
-.where-online{
-  margin-bottom: 22px;
+.where-block + .where-block{
+  margin-top: 36px;
 }
 
 .where-map{
@@ -316,34 +286,33 @@ p:last-child{ margin-bottom: 0; }
 }
 
 /* =========================================================
+   7b. INSTAGRAM SECTION (Elfsight-widget + volgknop)
+   ========================================================= */
+.ig-follow{
+  justify-content: center;
+  margin-top: 32px;
+}
+
+/* =========================================================
    8. CONTACT SECTION
    ========================================================= */
-.contact-lines p{
-  text-align: center;
+/* twee kolommen rond het midden, tekst links uitgelijnd;
+   op smalle schermen staan ze onder elkaar */
+.contact-cols{
+  display: grid;
+  grid-template-columns: max-content max-content;
+  justify-content: center;
+  column-gap: 72px;
+  row-gap: 22px;
+  text-align: left;
+}
+
+@media (max-width: 519px){
+  .contact-cols{ grid-template-columns: max-content; }
 }
 
 .contact-lines a{
   text-decoration: none;
-}
-
-/* =========================================================
-   9. FOOTER
-   ========================================================= */
-footer{
-  background-color: var(--color-teal);
-  background-size: 12px 12px;
-  padding: 40px var(--side-padding);
-  display: flex;
-  justify-content: center;
-}
-
-.footer-logo-link{
-  display: inline-block;
-}
-
-.footer-logo-link img{
-  width: 150px;
-  height: 150px;
 }
 
 /* =========================================================
@@ -355,22 +324,47 @@ footer{
     --max-width: 560px;
   }
 
-  .title-brand{ font-size: 2.2rem; }
   .title-section{ font-size: 1.7rem; }
   p{ font-size: 1.05rem; }
   .poten-box-frame{ height: 520px; }
 }
 
 @media (min-width: 960px){
-  #poten .section-inner{ max-width: 1040px; }
-  .poten-layout{
+  /* hero, Poten en Instagram: breed, met veel witruimte */
+  .section-inner.wide{
+    max-width: var(--wide-width);
+    padding-top: 88px;
+    padding-bottom: 88px;
+  }
+
+  /* hero: logo + foto | tekst | tekst */
+  .hero-layout{
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 56px;
+    grid-template-columns: 300px minmax(0, 1fr) minmax(0, 1fr);
+    gap: 72px;
     align-items: start;
   }
-  .poten-where{ margin-top: 0; }
-  .where-map{ height: 440px; }
+  .photo-frame{ width: 100%; max-width: none; margin: 0; }
+  .hero-logo{ width: 60%; }
+  .more-text{ grid-template-rows: 1fr; }           /* alle tekst zichtbaar */
+  .hero-col-b .more-text > div{ padding-top: 0; }
+  .chevron-btn{ display: none; }
+
+  /* Poten: doosje | tekst + downloads | online + kaart */
+  .poten-layout{
+    display: grid;
+    grid-template-columns: 300px minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas: "box intro where" "box text where";
+    column-gap: 72px;
+    align-items: start;
+  }
+  .poten-box{ grid-area: box; margin: 0; }
+  .poten-intro{ grid-area: intro; }
+  .poten-text{ grid-area: text; }
+  .poten-where{ grid-area: where; margin-top: 0; }
+  .where-map{ height: 420px; }
+
 }
 
 </style>
@@ -378,45 +372,58 @@ footer{
 <body>
 
 <!-- =========================================================
-     NAVIGATION — links scroll smoothly to the matching section
-     and show a clean URL (e.g. /poten) instead of /#poten
-     ========================================================= -->
-<nav class="navbar">
-  <div class="navbar-inner">
-    <a href="/" data-nav>Yska Games</a>
-    <a href="/poten" data-nav>Poten</a>
-    <a href="/andere-spellen" data-nav>Andere Spellen</a>
-    <a href="/contact" data-nav>Contact</a>
-  </div>
-</nav>
-
-<!-- =========================================================
      HERO SECTION
      ========================================================= -->
 <header id="top" class="bg-teal">
-  <div class="section-inner">
+  <div class="section-inner wide">
 
-    <h1 class="title-brand">Yska Games</h1>
+    <div class="hero-layout">
 
-    <div class="photo-frame">
-      <!-- Replace with your own file, keep the same path/name or update the src below -->
-      <img src="Foto%20Sjoerd%20Vierkant.png" alt="Sjoerd Yska">
-    </div>
-
-    <p class="lead">Hallo, ik ben Sjoerd Yska. Ik ontwerp en geef bord- en kaartspellen uit. Ik maak toegankelijke spellen die snel te leren zijn, maar waar genoeg in zit om ze vaker te blijven spelen. Binnenkort verschijnt Poten, het eerste spel dat ik zelf uitgeef.</p>
-
-    <!-- extra paragraphs, hidden until the chevron is clicked -->
-    <div class="more-text" id="moreText">
-      <div>
-        <p>Ik ben altijd al bezig geweest met spellen en creatief werk. Na mijn studie ben ik ook echt begonnen met het spellen ontwerpen.</p>
-
-        <p>In 2025 kwam mijn eerste spel, Badass Bunnies, uit bij uitgever 999 Games. Inmiddels werk ik aan meerdere nieuwe spellen en bouw ik verder aan Yska Games.</p>
-
-        <p>Bij mijn eigen spellen komt alles samen: het bedenken van het spel, het artwork en de rest eromheen. Ik probeer mijn spellen zo te maken dat ze voor zoveel mogelijk mensen werken: vanaf 8 jaar, makkelijk uit te leggen, duidelijke iconen, niet te veel tekst en gewoon prettig om te spelen. En met genoeg keuzes erin om interessant en spannend te blijven.</p>
+      <div class="hero-id">
+        <h1 class="hero-logo"><span class="sr-only">Yska Games</span>
+          <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="1652 3382 153 153">
+      <style>.cls-1{fill:#fffbf6;}</style>
+      <path class="cls-1" d="M1698.88,3433.34v-14.17c0-2.35-1.9-4.25-4.25-4.25s-4.25,1.9-4.25,4.25v14.17c0,3.4-1.99,6.38-4.25,6.38,0,0,0,0,0,0s0,0,0,0c-2.26,0-4.25-2.98-4.25-6.38v-14.17c0-2.35-1.9-4.25-4.25-4.25s-4.25,1.9-4.25,4.25v14.17c0,6.46,3.56,11.96,8.5,14.01v49.77c0,2.35,1.9,4.25,4.25,4.25s4.25-1.9,4.25-4.25v-49.77c4.95-2.05,8.5-7.55,8.5-14.01Z"/>
+      <path class="cls-1" d="M1713.76,3457.44c-2.26,0-4.25-2.98-4.25-6.38,0-2.35-1.9-4.25-4.25-4.25s-4.25,1.9-4.25,4.25c0,8.21,5.72,14.88,12.76,14.88s12.76-6.68,12.76-14.88-5.72-14.88-12.76-14.88c-2.26,0-4.25-2.98-4.25-6.38s1.99-6.38,4.25-6.38,4.25,2.98,4.25,6.38c0,2.35,1.9,4.25,4.25,4.25s4.25-1.9,4.25-4.25c0-8.21-5.72-14.88-12.76-14.88s-12.76,6.68-12.76,14.88,5.72,14.88,12.76,14.88c2.26,0,4.25,2.98,4.25,6.38s-1.99,6.38-4.25,6.38Z"/>
+      <path class="cls-1" d="M1769.39,3414.92c-7.03,0-12.76,6.68-12.76,14.88v31.89c0,2.35,1.9,4.25,4.25,4.25s4.25-1.9,4.25-4.25v-11.69h8.5v47.13c0,2.35,1.9,4.25,4.25,4.25s4.25-1.9,4.25-4.25v-67.32c0-8.21-5.72-14.88-12.76-14.88ZM1765.14,3441.49v-11.69c0-3.4,1.99-6.38,4.25-6.38s4.25,2.98,4.25,6.38v11.69h-8.5Z"/>
+      <path class="cls-1" d="M1701.36,3482.77c1.54,0,2.83,1.87,2.83,4.07,0,1.17.95,2.13,2.13,2.13s2.13-.95,2.13-2.13c0-4.59-3.18-8.33-7.09-8.33s-7.09,3.74-7.09,8.33v5.31c0,4.59,3.18,8.33,7.09,8.33,1.16,0,2.25-.33,3.22-.92.38.55,1.02.92,1.75.92,1.17,0,2.13-.95,2.13-2.13v-6.2c0-1.17-.95-2.13-2.13-2.13h-2.83c-1.17,0-2.13.95-2.13,2.13s.95,2.13,2.13,2.13h.27c-.51,1.16-1.4,1.95-2.39,1.95-1.54,0-2.83-1.87-2.83-4.07v-5.31c0-2.21,1.3-4.07,2.83-4.07Z"/>
+      <path class="cls-1" d="M1716.25,3478.52c-3.52,0-6.38,3.34-6.38,7.44v12.4c0,1.17.95,2.13,2.13,2.13s2.13-.95,2.13-2.13v-4.96h4.25v4.96c0,1.17.95,2.13,2.13,2.13s2.13-.95,2.13-2.13v-12.4c0-4.1-2.86-7.44-6.38-7.44ZM1714.12,3489.15v-3.19c0-1.7.99-3.19,2.13-3.19s2.13,1.49,2.13,3.19v3.19h-4.25Z"/>
+      <path class="cls-1" d="M1736.8,3478.52c-1.34,0-2.57.54-3.54,1.45-.97-.9-2.2-1.45-3.54-1.45-3.13,0-5.67,2.94-5.67,6.56v13.29c0,1.17.95,2.13,2.13,2.13s2.13-.95,2.13-2.13v-13.29c0-1.32.75-2.3,1.42-2.3s1.42.98,1.42,2.3v13.29c0,1.17.95,2.13,2.13,2.13s2.13-.95,2.13-2.13v-13.29c0-1.32.75-2.3,1.42-2.3s1.42.98,1.42,2.3v13.29c0,1.17.95,2.13,2.13,2.13s2.13-.95,2.13-2.13v-13.29c0-3.61-2.54-6.56-5.67-6.56Z"/>
+      <path class="cls-1" d="M1750.26,3482.77h4.25c1.17,0,2.13-.95,2.13-2.13s-.95-2.13-2.13-2.13h-4.25c-3.52,0-6.38,3.34-6.38,7.44v7.09c0,4.1,2.86,7.44,6.38,7.44h4.25c1.17,0,2.13-.95,2.13-2.13s-.95-2.13-2.13-2.13h-4.25c-1.13,0-2.13-1.49-2.13-3.19v-1.42h3.54c1.17,0,2.13-.95,2.13-2.13s-.95-2.13-2.13-2.13h-3.54v-1.42c0-1.7.99-3.19,2.13-3.19Z"/>
+      <path class="cls-1" d="M1763.73,3482.77c1.17,0,2.13,1.03,2.13,2.3,0,1.17.95,2.13,2.13,2.13s2.13-.95,2.13-2.13c0-3.61-2.86-6.56-6.38-6.56s-6.38,2.94-6.38,6.56,2.86,6.56,6.38,6.56c1.17,0,2.13,1.03,2.13,2.3s-.95,2.3-2.13,2.3-2.13-1.03-2.13-2.3c0-1.17-.95-2.13-2.13-2.13s-2.13.95-2.13,2.13c0,3.61,2.86,6.55,6.38,6.55s6.38-2.94,6.38-6.55-2.86-6.56-6.38-6.56c-1.17,0-2.13-1.03-2.13-2.3s.95-2.3,2.13-2.3Z"/>
+      <path class="cls-1" d="M1733.25,3465.94c2.35,0,4.25-1.9,4.25-4.25v-13.98c.81-.2,1.6-.46,2.38-.76l6.05,15.82c.65,1.69,2.26,2.73,3.97,2.73.5,0,1.02-.09,1.52-.28,2.19-.84,3.29-3.3,2.45-5.49l-6.77-17.69c4.53-4.68,7.4-11.61,7.4-19.32v-3.54c0-2.35-1.9-4.25-4.25-4.25s-4.25,1.9-4.25,4.25v3.54c0,7.39-3.56,13.67-8.5,16.02v-19.56c0-2.35-1.9-4.25-4.25-4.25s-4.25,1.9-4.25,4.25v42.52c0,2.35,1.9,4.25,4.25,4.25Z"/>
+      <path class="cls-1" d="M1767.99,3387.54h-79.38c-17.19,0-31.18,13.99-31.18,31.18v79.38c0,17.58,14.3,31.88,31.87,31.88h78.69c17.58,0,31.88-14.3,31.88-31.88v-78.69c0-17.58-14.3-31.87-31.88-31.87ZM1791.36,3498.11c0,12.89-10.48,23.37-23.37,23.37h-78.69c-12.89,0-23.37-10.48-23.37-23.37v-79.38c0-12.5,10.17-22.68,22.68-22.68h79.38c12.89,0,23.37,10.48,23.37,23.37v78.69Z"/>
+    </svg>
+        </h1>
+        <div class="photo-frame">
+          <!-- Replace with your own file, keep the same path/name or update the src below -->
+          <img src="Foto%20Sjoerd%20Vierkant.png" alt="Sjoerd Yska">
+        </div>
       </div>
-    </div>
 
-    <button class="chevron-btn" id="chevronBtn" aria-expanded="false" aria-controls="moreText" aria-label="Lees meer">
+      <div class="hero-col">
+        <p class="lead">Hallo, ik ben Sjoerd Yska. Ik ontwerp en geef bord- en kaartspellen uit. Ik maak toegankelijke spellen die snel te leren zijn, maar waar genoeg in zit om ze vaker te blijven spelen. Binnenkort verschijnt Poten, het eerste spel dat ik zelf uitgeef.</p>
+        <!-- extra tekst: op mobiel verborgen tot de pijl wordt aangeklikt -->
+        <div class="more-text" id="moreText1">
+          <div>
+            <p>Ik ben altijd al bezig geweest met spellen en creatief werk. Na mijn studie ben ik ook echt begonnen met het spellen ontwerpen.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-col hero-col-b">
+        <div class="more-text" id="moreText2">
+          <div>
+            <p>In 2025 kwam mijn eerste spel, Badass Bunnies, uit bij uitgever 999 Games. Inmiddels werk ik aan meerdere nieuwe spellen en bouw ik verder aan Yska Games.</p>
+
+            <p>Bij mijn eigen spellen komt alles samen: het bedenken van het spel, het artwork en de rest eromheen. Ik probeer mijn spellen zo te maken dat ze voor zoveel mogelijk mensen werken: vanaf 8 jaar, makkelijk uit te leggen, duidelijke iconen, niet te veel tekst en gewoon prettig om te spelen. En met genoeg keuzes erin om interessant en spannend te blijven.</p>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /.hero-layout -->
+
+    <button class="chevron-btn" id="chevronBtn" aria-expanded="false" aria-controls="moreText1 moreText2" aria-label="Lees meer">
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="6 9 12 15 18 9"></polyline>
       </svg>
@@ -428,39 +435,40 @@ footer{
 <!-- =========================================================
      POTEN SECTION
      ========================================================= -->
-<section id="poten" class="bg-cream">
-  <div class="section-inner">
-
-    <h2 class="title-section">Poten</h2>
+<section id="poten" class="bg-cream" aria-label="Poten">
+  <div class="section-inner wide">
 
     <div class="poten-layout">
-    <div class="poten-info">
 
-    <p>Mijn eerste spel Poten wordt dit jaar uitgegeven. Ben je geïnteresseerd? Bekijk het doosje hier!</p>
+      <p class="poten-intro">Mijn eerste spel Poten wordt dit jaar uitgegeven. Ben je geïnteresseerd? Bekijk het doosje hier!</p>
 
-    <div class="poten-box">
-      <iframe class="poten-box-frame" title="Poten 3D doosje" src="boxpoten.html" loading="lazy" scrolling="no"></iframe>
-    </div>
+      <div class="poten-box">
+        <iframe class="poten-box-frame" title="Poten 3D doosje" src="boxpoten.html" loading="lazy" scrolling="no"></iframe>
+      </div>
 
-    <p>Poten is een klein spel met veel spanning en speelplezier! Geen ingewikkelde regels, dus jong en oud kan meteen meedoen.</p>
+      <div class="poten-text">
+        <p>Poten is een klein spel met veel spanning en speelplezier! Geen ingewikkelde regels, dus jong en oud kan meteen meedoen.</p>
 
-    <p>De spelregels kun je hier downloaden:</p>
+        <p>De spelregels kun je hier downloaden:</p>
 
-    <div class="rules-downloads">
-      <a class="rules-link" href="Rules%20NL.pdf" download>Rules NL</a>
-      <a class="rules-link" href="Rules%20EN.pdf" download>Rules EN</a>
-      <a class="rules-link" href="Rules%20FR.pdf" download>Rules FR</a>
-    </div>
+        <div class="rules-downloads">
+          <a class="rules-link" href="Rules%20NL.pdf" download>Rules NL</a>
+          <a class="rules-link" href="Rules%20EN.pdf" download>Rules EN</a>
+          <a class="rules-link" href="Rules%20FR.pdf" download>Rules FR</a>
+        </div>
+      </div>
 
-    </div><!-- /.poten-info -->
-
-    <!-- Waar te koop: wordt gevuld uit verkooppunten.csv (zie script onderaan) -->
-    <div class="poten-where" id="potenWhere" hidden>
-      <h3 class="title-sub">Verkooppunten</h3>
-      <p>Bestel Poten online of ga langs bij een winkel in de buurt.</p>
-      <div class="rules-downloads where-online" id="verkoopOnline"></div>
-      <div class="where-map" id="verkoopKaart" role="region" aria-label="Kaart met winkels waar Poten te koop is"></div>
-    </div>
+      <!-- Verkooppunten: wordt gevuld uit verkooppunten.csv (zie script onderaan) -->
+      <div class="poten-where" id="potenWhere" hidden>
+        <div class="where-block" id="verkoopOnlineBlock">
+          <h3 class="title-sub">Online verkooppunten</h3>
+          <div class="rules-downloads where-online" id="verkoopOnline"></div>
+        </div>
+        <div class="where-block" id="verkoopKaartBlock">
+          <h3 class="title-sub">Fysieke verkooppunten</h3>
+          <div class="where-map" id="verkoopKaart" role="region" aria-label="Kaart met winkels waar Poten te koop is"></div>
+        </div>
+      </div>
 
     </div><!-- /.poten-layout -->
 
@@ -484,95 +492,62 @@ footer{
 </section>
 
 <!-- =========================================================
-     CONTACT SECTION
+     INSTAGRAM SECTION — blijft verborgen tot er posts geladen zijn
+     (plak de Elfsight-code in #igEmbed)
      ========================================================= -->
-<section id="contact" class="bg-cream">
-  <div class="section-inner contact-lines">
+<section id="instagram" class="bg-cream" hidden>
+  <div class="section-inner wide">
 
-    <h2 class="title-section">Contact</h2>
+    <h2 class="title-section">Instagram</h2>
 
-    <p>Sjoerd Yska</p>
-    <p><a href="mailto:info@yskagames.com">info@yskagames.com</a></p>
-    <p><a href="tel:+31657045575">+31 6 57 04 55 75</a></p>
-    <p><a href="https://www.instagram.com/yskagames/" target="_blank" rel="noopener">instagram.com/yskagames</a></p>
-    <p>KvK: 99631091</p>
+    <div id="igEmbed">
+      <!-- Elfsight Instagram Feed -->
+      <script src="https://elfsightcdn.com/platform.js" async></script>
+      <div class="elfsight-app-23bd27ec-042e-4c9c-9895-ef24b277f8c1" data-elfsight-app-lazy></div>
+    </div>
+
+    <div class="rules-downloads ig-follow">
+      <a class="rules-link" href="https://www.instagram.com/yskagames/" target="_blank" rel="noopener">Volg @yskagames op Instagram</a>
+    </div>
 
   </div>
 </section>
 
 <!-- =========================================================
-     FOOTER — logo scrolls back to the top when clicked
+     CONTACT SECTION
      ========================================================= -->
-<footer>
-  <a href="/" data-nav class="footer-logo-link" aria-label="Naar boven">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="1652 3382 153 153" width="150" height="150">
-      <style>.cls-1{fill:#fffbf6;}</style>
-      <path class="cls-1" d="M1698.88,3433.34v-14.17c0-2.35-1.9-4.25-4.25-4.25s-4.25,1.9-4.25,4.25v14.17c0,3.4-1.99,6.38-4.25,6.38,0,0,0,0,0,0s0,0,0,0c-2.26,0-4.25-2.98-4.25-6.38v-14.17c0-2.35-1.9-4.25-4.25-4.25s-4.25,1.9-4.25,4.25v14.17c0,6.46,3.56,11.96,8.5,14.01v49.77c0,2.35,1.9,4.25,4.25,4.25s4.25-1.9,4.25-4.25v-49.77c4.95-2.05,8.5-7.55,8.5-14.01Z"/>
-      <path class="cls-1" d="M1713.76,3457.44c-2.26,0-4.25-2.98-4.25-6.38,0-2.35-1.9-4.25-4.25-4.25s-4.25,1.9-4.25,4.25c0,8.21,5.72,14.88,12.76,14.88s12.76-6.68,12.76-14.88-5.72-14.88-12.76-14.88c-2.26,0-4.25-2.98-4.25-6.38s1.99-6.38,4.25-6.38,4.25,2.98,4.25,6.38c0,2.35,1.9,4.25,4.25,4.25s4.25-1.9,4.25-4.25c0-8.21-5.72-14.88-12.76-14.88s-12.76,6.68-12.76,14.88,5.72,14.88,12.76,14.88c2.26,0,4.25,2.98,4.25,6.38s-1.99,6.38-4.25,6.38Z"/>
-      <path class="cls-1" d="M1769.39,3414.92c-7.03,0-12.76,6.68-12.76,14.88v31.89c0,2.35,1.9,4.25,4.25,4.25s4.25-1.9,4.25-4.25v-11.69h8.5v47.13c0,2.35,1.9,4.25,4.25,4.25s4.25-1.9,4.25-4.25v-67.32c0-8.21-5.72-14.88-12.76-14.88ZM1765.14,3441.49v-11.69c0-3.4,1.99-6.38,4.25-6.38s4.25,2.98,4.25,6.38v11.69h-8.5Z"/>
-      <path class="cls-1" d="M1701.36,3482.77c1.54,0,2.83,1.87,2.83,4.07,0,1.17.95,2.13,2.13,2.13s2.13-.95,2.13-2.13c0-4.59-3.18-8.33-7.09-8.33s-7.09,3.74-7.09,8.33v5.31c0,4.59,3.18,8.33,7.09,8.33,1.16,0,2.25-.33,3.22-.92.38.55,1.02.92,1.75.92,1.17,0,2.13-.95,2.13-2.13v-6.2c0-1.17-.95-2.13-2.13-2.13h-2.83c-1.17,0-2.13.95-2.13,2.13s.95,2.13,2.13,2.13h.27c-.51,1.16-1.4,1.95-2.39,1.95-1.54,0-2.83-1.87-2.83-4.07v-5.31c0-2.21,1.3-4.07,2.83-4.07Z"/>
-      <path class="cls-1" d="M1716.25,3478.52c-3.52,0-6.38,3.34-6.38,7.44v12.4c0,1.17.95,2.13,2.13,2.13s2.13-.95,2.13-2.13v-4.96h4.25v4.96c0,1.17.95,2.13,2.13,2.13s2.13-.95,2.13-2.13v-12.4c0-4.1-2.86-7.44-6.38-7.44ZM1714.12,3489.15v-3.19c0-1.7.99-3.19,2.13-3.19s2.13,1.49,2.13,3.19v3.19h-4.25Z"/>
-      <path class="cls-1" d="M1736.8,3478.52c-1.34,0-2.57.54-3.54,1.45-.97-.9-2.2-1.45-3.54-1.45-3.13,0-5.67,2.94-5.67,6.56v13.29c0,1.17.95,2.13,2.13,2.13s2.13-.95,2.13-2.13v-13.29c0-1.32.75-2.3,1.42-2.3s1.42.98,1.42,2.3v13.29c0,1.17.95,2.13,2.13,2.13s2.13-.95,2.13-2.13v-13.29c0-1.32.75-2.3,1.42-2.3s1.42.98,1.42,2.3v13.29c0,1.17.95,2.13,2.13,2.13s2.13-.95,2.13-2.13v-13.29c0-3.61-2.54-6.56-5.67-6.56Z"/>
-      <path class="cls-1" d="M1750.26,3482.77h4.25c1.17,0,2.13-.95,2.13-2.13s-.95-2.13-2.13-2.13h-4.25c-3.52,0-6.38,3.34-6.38,7.44v7.09c0,4.1,2.86,7.44,6.38,7.44h4.25c1.17,0,2.13-.95,2.13-2.13s-.95-2.13-2.13-2.13h-4.25c-1.13,0-2.13-1.49-2.13-3.19v-1.42h3.54c1.17,0,2.13-.95,2.13-2.13s-.95-2.13-2.13-2.13h-3.54v-1.42c0-1.7.99-3.19,2.13-3.19Z"/>
-      <path class="cls-1" d="M1763.73,3482.77c1.17,0,2.13,1.03,2.13,2.3,0,1.17.95,2.13,2.13,2.13s2.13-.95,2.13-2.13c0-3.61-2.86-6.56-6.38-6.56s-6.38,2.94-6.38,6.56,2.86,6.56,6.38,6.56c1.17,0,2.13,1.03,2.13,2.3s-.95,2.3-2.13,2.3-2.13-1.03-2.13-2.3c0-1.17-.95-2.13-2.13-2.13s-2.13.95-2.13,2.13c0,3.61,2.86,6.55,6.38,6.55s6.38-2.94,6.38-6.55-2.86-6.56-6.38-6.56c-1.17,0-2.13-1.03-2.13-2.3s.95-2.3,2.13-2.3Z"/>
-      <path class="cls-1" d="M1733.25,3465.94c2.35,0,4.25-1.9,4.25-4.25v-13.98c.81-.2,1.6-.46,2.38-.76l6.05,15.82c.65,1.69,2.26,2.73,3.97,2.73.5,0,1.02-.09,1.52-.28,2.19-.84,3.29-3.3,2.45-5.49l-6.77-17.69c4.53-4.68,7.4-11.61,7.4-19.32v-3.54c0-2.35-1.9-4.25-4.25-4.25s-4.25,1.9-4.25,4.25v3.54c0,7.39-3.56,13.67-8.5,16.02v-19.56c0-2.35-1.9-4.25-4.25-4.25s-4.25,1.9-4.25,4.25v42.52c0,2.35,1.9,4.25,4.25,4.25Z"/>
-      <path class="cls-1" d="M1767.99,3387.54h-79.38c-17.19,0-31.18,13.99-31.18,31.18v79.38c0,17.58,14.3,31.88,31.87,31.88h78.69c17.58,0,31.88-14.3,31.88-31.88v-78.69c0-17.58-14.3-31.87-31.88-31.87ZM1791.36,3498.11c0,12.89-10.48,23.37-23.37,23.37h-78.69c-12.89,0-23.37-10.48-23.37-23.37v-79.38c0-12.5,10.17-22.68,22.68-22.68h79.38c12.89,0,23.37,10.48,23.37,23.37v78.69Z"/>
-    </svg>
-  </a>
-</footer>
+<section id="contact" class="bg-teal">
+  <div class="section-inner contact-lines">
+
+    <h2 class="title-section">Contact</h2>
+
+    <div class="contact-cols">
+      <div>
+        <p>Sjoerd Yska</p>
+        <p><a href="mailto:info@yskagames.com">info@yskagames.com</a></p>
+        <p><a href="tel:+31657045575">+31 6 57 04 55 75</a></p>
+      </div>
+      <div>
+        <p>KvK: 99631091</p>
+        <p>BTW: NL005399685B05</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
 
 <script>
-  // Toggles the extra hero paragraphs open/closed
+  // Op mobiel: klapt de extra hero-tekst open/dicht (op desktop is alles zichtbaar)
   const chevronBtn = document.getElementById('chevronBtn');
-  const moreText = document.getElementById('moreText');
+  const moreTexts = document.querySelectorAll('.more-text');
 
   chevronBtn.addEventListener('click', () => {
-    const isOpen = moreText.classList.toggle('is-open');
-    chevronBtn.classList.toggle('is-open', isOpen);
+    const isOpen = chevronBtn.classList.toggle('is-open');
+    moreTexts.forEach(el => el.classList.toggle('is-open', isOpen));
     chevronBtn.setAttribute('aria-expanded', isOpen);
   });
-
-
-  // -----------------------------------------------------------------
-  // Clean-URL navigation: show /poten instead of /#poten, with no page
-  // reload. NOTE: for someone opening yskagames.com/poten directly (or
-  // refreshing while on it) to work, your hosting has to serve this same
-  // file for /poten, /andere-spellen and /contact — a standard
-  // "rewrite everything to index.html" rule. In-page clicking works
-  // without any server changes.
-  // -----------------------------------------------------------------
-  const routes = {
-    '/': 'top',
-    '/poten': 'poten',
-    '/andere-spellen': 'andere-spellen',
-    '/contact': 'contact'
-  };
-
-  function scrollToPath(path, smooth){
-    const id = routes[path];
-    if (!id) return;
-    if (id === 'top'){
-      window.scrollTo({ top: 0, behavior: smooth ? 'smooth' : 'auto' });
-    } else {
-      const el = document.getElementById(id);
-      if (el) el.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto' });
-    }
-  }
-
-  document.querySelectorAll('a[data-nav]').forEach(link => {
-    link.addEventListener('click', e => {
-      const path = link.getAttribute('href');
-      if (!(path in routes)) return;   // any other link keeps its normal behaviour
-      e.preventDefault();
-      if (location.pathname !== path) history.pushState(null, '', path);
-      scrollToPath(path, true);
-    });
-  });
-
-  window.addEventListener('popstate', () => scrollToPath(location.pathname, false));
-
-  // On load, if we arrived on a section path, jump straight to that section.
-  scrollToPath(location.pathname, false);
 </script>
 
 <!-- Verkooppunten Poten: leest verkooppunten.csv (kolommen: naam;adres;postcode;plaats;land;website;spellen;lat;lon) -->
@@ -622,9 +597,9 @@ footer{
           a.href = r.website; a.target = '_blank'; a.rel = 'noopener'; a.textContent = r.naam;
           onlineBox.append(a);
         });
-        if (!online.length) onlineBox.hidden = true;
+        if (!online.length) document.getElementById('verkoopOnlineBlock').hidden = true;
 
-        if (!pins.length){ mapBox.hidden = true; return; }
+        if (!pins.length){ document.getElementById('verkoopKaartBlock').hidden = true; return; }
         const map = L.map(mapBox, { scrollWheelZoom: false, dragging: !L.Browser.mobile })
                      .setView([52.1, 5.3], 7);
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -640,6 +615,13 @@ footer{
       }
     });
   })();
+</script>
+
+<!-- Instagram: de sectie verschijnt zodra er een Elfsight-widget in #igEmbed staat -->
+<script>
+  if (document.getElementById('igEmbed').children.length){
+    document.getElementById('instagram').hidden = false;
+  }
 </script>
 
 </body>
